@@ -35,7 +35,8 @@ ENV SNORT_VERSION 2.9.11.1
 RUN wget https://www.snort.org/downloads/snort/snort-${SNORT_VERSION}.tar.gz \
     && tar xvfz snort-${SNORT_VERSION}.tar.gz \
     && cd snort-${SNORT_VERSION} \
-    && ./configure; make; make install
+    && ./configure --enable-sourcefire --enable-perfprofiling --enable-linux-smp-stats --enable-gre  --enable-targetbased --enable-mpls \
+    &&  make && make install
 
 RUN ldconfig
 
