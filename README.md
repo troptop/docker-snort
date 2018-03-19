@@ -9,13 +9,34 @@ You may need to run as `sudo`
 Attach the snort in container to have full access to the network
 
 ```
-$ docker run -it --rm --net=host linton/docker-snort /bin/bash
+$ docker run -it --rm --net=host -v /path/snortdir:/etc/snort/etc troptop/docker-snort-pulledpork /bin/bash
+```
+
+List of configuration file:
+```
+ls /etc/snort/etc/
+classification.config  reference.config       sid-msg.map            snort.conf             threshold.conf         unicode.map
+```
+
+```
+$ docker run -it --rm --net=host -v /path/snortrules:/etc/snort/rules troptop/docker-snort-pulledpork /bin/bash
+```
+List of Rules Files
+```
+ls /etc/snort/rules/
+black_list.rules       iplists/default.blacklist               iplistsIPRVersion.dat  local.rules            snort.rules            white_list.rules
+```
+`iplists/default.blacklist, snort.rules and iplistsIPRVersion.dat` are automatically updated by pullepork every night (check crontrab)
+You can export the `black_list.rules, white_list.rules and local.rules` to specify your own rules
+
+```
+$ docker run -d --rm --net=host -v /path/snortrules/local.rules:/etc/snort/rules/local.rules -v /path/snortdir/snort.conf:/etc/snort/etc/snort.conf troptop/docker-snort-pulledpork /bin/bash
 ```
 
 Or you may need to add --cap-add=NET_ADMIN or --privileged (unsafe)
 
 ```
-$ docker run -it --rm --net=host --cap-add=NET_ADMIN linton/docker-snort /bin/bash
+$ docker run -it --rm --net=host --cap-add=NET_ADMIN troptop/docker-snort-pulledpork /bin/bash
 ```
 
 
