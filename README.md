@@ -40,6 +40,10 @@ $ docker run -it --rm --net=host --cap-add=NET_ADMIN troptop/docker-snort-pulled
 ```
 
 
+```
+docker run -it -v /Path/SNORT/etc/:/etc/snort/ -v /Path/SNORT/log/:/var/log/snort --rm \
+--net=host troptop/docker-snort-pulledpork snort -c /etc/snort/etc/snort.conf
+```
 # Snort Usage
 
 For testing it's work. Add this rule in the file at `/etc/snort/rules/local.rules`
