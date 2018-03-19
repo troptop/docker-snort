@@ -54,6 +54,7 @@ RUN mkdir -p /var/log/snort && \
     cp -r /opt/snort/* /etc/snort/ 
 
 RUN cp -r /opt/pulledpork/* /etc/pulledpork && \
+	/usr/bin/chmod +x /etc/pulledpork/pulledpork.pl && /usr/bin/ln -s /etc/pulledpork/pulledpork.pl /usr/local/bin/pulledpork && \
     echo '01 04 * * * /usr/local/bin/pulledpork.pl -c /etc/pulledpork/pulledpork.conf -l' >> /etc/crontab && \
     restart cron
 # Clean up APT when done.
