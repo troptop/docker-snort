@@ -1,7 +1,6 @@
 # Snort in Docker
-FROM ubuntu:14.04.4
-
-MAINTAINER John Lin <linton.tw@gmail.com>
+FROM ubuntu:latest
+ENV IPS false
 
 RUN apt-get update && \
     apt-get install -y \
@@ -18,7 +17,7 @@ RUN apt-get update && \
         zlib1g-dev \
         # Optional libraries that improves fuctionality
         liblzma-dev \
-        openssl \
+        openssl iptables libnghttp2-dev libnetfilter-queue-dev libnetfilter-queue1 libnfnetlink-dev libnfnetlink0 \
         libssl-dev libcrypt-ssleay-perl liblwp-useragent-determined-perl git vim tzdata python-jinja2 && \
     rm -rf /var/lib/apt/lists/*
 
@@ -42,21 +41,16 @@ RUN ldconfig
 
 # ENV SNORT_RULES_SNAPSHOT 2972
 # ADD snortrules-snapshot-${SNORT_RULES_SNAPSHOT} /opt
-RUN mkdir -p /opt/snort
-RUN mkdir -p /opt/pulledpork
-ADD mysnortrules /opt/snort
-ADD mypulledpork /opt/pulledpork
 RUN mkdir -p /var/log/snort && \
     mkdir -p /usr/local/lib/snort_dynamicrules && \
     mkdir -p /etc/snort && \
-    mkdir -p /etc/pulledpork && \
-    # mysnortrules rules
-    cp -r /opt/snort/* /etc/snort/ 
+    mkdir -p /etc/pulledpork
+ADD mysnortrules /etc/snort
+ADD mypulledpork /etc/pulledpork
 
-RUN cp -r /opt/pulledpork/* /etc/pulledpork && \
-	/bin/chmod +x /etc/pulledpork/pulledpork.pl && /bin/ln -s /etc/pulledpork/pulledpork.pl /usr/local/bin/pulledpork.pl && \
-    echo '01 04 * * * /usr/local/bin/pulledpork.pl -c /etc/pulledpork/pulledpork.conf -l' >> /etc/crontab && \
-    restart cron
+RUN /bin/chmod +x /etc/pulledpork/pulledpork.pl && /bin/ln -s /etc/pulledpork/pulledpork.pl /usr/local/bin/pulledpork.pl && \
+    echo '01 04 * * * /usr/local/bin/pulledpork.pl -c /etc/pulledpork/pulledpork.conf -l' >> /etc/crontab 
+    #restart cron
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /tmp/* /var/tmp/* \
     /opt/snort-${SNORT_VERSION}.tar.gz /opt/daq-${DAQ_VERSION}.tar.gz
