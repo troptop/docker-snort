@@ -19,7 +19,7 @@ RUN apt-get update && \
         # Optional libraries that improves fuctionality
         liblzma-dev \
         openssl \
-        libssl-dev libcrypt-ssleay-perl liblwp-useragent-determined-perl git vim && \
+        libssl-dev libcrypt-ssleay-perl liblwp-useragent-determined-perl git vim tzdata python-jinja2 && \
     rm -rf /var/lib/apt/lists/*
 
 # Define working directory.
@@ -62,4 +62,10 @@ RUN apt-get clean && rm -rf /tmp/* /var/tmp/* \
     /opt/snort-${SNORT_VERSION}.tar.gz /opt/daq-${DAQ_VERSION}.tar.gz
 
 # Validate an installation
-CMD ["snort", "-V"]
+
+COPY jinja-pulledpork-conf.py .
+COPY pulledpork-template.conf .
+COPY entrypoint.sh /opt/
+RUN chmod +x /opt/entrypoint.sh
+ENTRYPOINT ["/opt/entrypoint.sh"]
+
