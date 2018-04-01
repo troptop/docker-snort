@@ -14,13 +14,14 @@ RUN apt-get update && \
         libpcre3-dev \
         libdumbnet-dev \
         # Additional required pre-requisite for Snort
-        zlib1g-dev \
+        zlib1g-dev python-pip \
         # Optional libraries that improves fuctionality
         liblzma-dev inotify-tools supervisor \
         openssl iptables libnghttp2-dev libnetfilter-queue-dev libnetfilter-queue1 libnfnetlink-dev libnfnetlink0 \
         libssl-dev libcrypt-ssleay-perl liblwp-useragent-determined-perl git vim tzdata python-jinja2 && \
     rm -rf /var/lib/apt/lists/*
 
+RUN pip install --upgrade pip && pip install supervisor-stdout
 # Define working directory.
 WORKDIR /opt
 
