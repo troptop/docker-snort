@@ -8,4 +8,5 @@ if [ "$IPS" != "false" ]; then
 	arg='-Q --daq nfq --daq-dir /usr/local/lib/daq/ --daq-var queue=0'
 fi
 /usr/bin/python /opt/jinja-pulledpork-conf.py > /etc/pulledpork/pulledpork.conf
+/usr/bin/python /opt/jinja-snort-conf.py > /etc/snort/snort.conf
 snort -c /etc/snort/snort.conf $arg

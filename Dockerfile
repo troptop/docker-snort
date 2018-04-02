@@ -64,6 +64,8 @@ COPY rotatesnort.conf /etc/logrotate.d/rotatesnort.conf
 COPY copy-file.sh .
 COPY jinja-pulledpork-conf.py .
 COPY pulledpork-template.conf .
+COPY jinja-snort-conf.py .
+COPY snort-template.conf .
 COPY entrypoint.sh /opt/
 RUN chmod +x /opt/entrypoint.sh /opt/copy-file.sh 
 CMD ["/usr/bin/supervisord"]
