@@ -6,7 +6,7 @@ inotifywait -m $sourceDir -e create |
     while read path action file; do
         filetmstp=$(echo $file | sed 's/\.[0-9]\{10\}//g')
         echo $filetmstp
-        fileproc=$(echo $filetmstp | tr '.' '-')
+        fileproc=$(echo $filetmstp | tr '.' '_' | tr '-' '_')
         echo $fileproc
         kill -9 $(eval echo \$$fileproc)
         echo "The file '$file' appeared in directory '$path' via '$action'"
