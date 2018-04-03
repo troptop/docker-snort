@@ -3,7 +3,8 @@ arg=''
 if [ "$IPS" != "false" ]; then
 	res=$(iptables -L -t mangle | grep -o 'NFQUEUE')
 	if [ "$res" == "" ]; then
-		iptables -t mangle -I PREROUTING  -j NFQUEUE --queue-num=0 --queue-bypass
+		#iptables -t mangle -I PREROUTING  -j NFQUEUE --queue-num=0 --queue-bypass
+		iptables -I FORWARD -j NFQUEUE --queue-num=0 --queue-bypass
 	fi
 	arg='-Q --daq nfq --daq-dir /usr/local/lib/daq/ --daq-var queue=0'
 fi
